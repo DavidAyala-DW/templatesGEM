@@ -1,0 +1,350 @@
+{% if fulfillment.item_count == item_count %} 
+  {% capture email_title %}Your order has been delivered{% endcapture %}
+  {% capture email_body %}Your order has been delivered. Track your shipment to see the delivery status.{% endcapture %}
+{% elsif fulfillment.item_count > 1 %} 
+  {% if fulfillment_status == 'fulfilled' %}
+    {% capture email_title %}The last items in your order has been delivered{% endcapture %}
+    {% capture email_body %}The last items in your order has been delivered. Track your shipment to see the delivery status.{% endcapture %}
+  {% else %}
+    {% capture email_title %}Some items in your order have been delivered{% endcapture %}
+    {% capture email_body %}Some items in your order have been delivered. Track your shipment to see the delivery status.{% endcapture %}
+  {% endif %}
+{% else %} 
+  {% if fulfillment_status == 'fulfilled' %}
+    {% capture email_title %}The last item in your order has been delivered{% endcapture %}
+    {% capture email_body %}The last item in your order has been delivered. Track your shipment to see the delivery status.{% endcapture %}
+  {% else %}
+    {% capture email_title %}One item in your order has been delivered{% endcapture %}
+    {% capture email_body %}One item in your order has been delivered. Track your shipment to see the delivery status.{% endcapture %}
+  {% endif %}
+{% endif %}
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+  <title>{{ email_title }}</title>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+  <meta name="viewport" content="width=device-width">
+  <link rel="stylesheet" type="text/css" href="/assets/notifications/styles.css">
+ <style>
+    .button__cell { background: {{ shop.email_accent_color }}; }
+    a, a:hover, a:active, a:visited { color: {{ shop.email_accent_color }}; }
+
+table.body {
+    background-color: #F2F5F2;
+}
+
+
+a {
+    color: #459b7e !important;
+}
+
+p a {
+  text-decoration: underline !important;
+}
+
+span.order-list__item-title {
+    color: #212121 !important;
+}
+
+span.order-list__item-variant {
+    color: #fc8606 !important;
+}
+
+p.order-list__item-price {
+    color: #459b7e !important;
+}
+
+del.order-list__item-original-price {
+    color: #459b7e !important;
+}
+
+td.subtotal-line__value, td.subtotal-line__value strong {
+    color: #459b7e !important;
+}
+
+td.subtotal-line__title * {
+    color: #212121 !important;
+}
+td.customer-info__item h4 {
+    color: #fc8606 !important;
+}
+
+td.customer-info__item p {
+    color: #212121 !important;
+}
+
+p.customer-info__item-content strong {
+    color: #459b7e !important;
+}
+
+td.button__cell, td.button__cell a {
+    background-color: #459b7e !important;
+    color: #fff !important;
+}
+
+
+tr.order-list__item, table.row.subtotal-lines, table.row.subtotal-table.subtotal-table--total, td.footer__cell, table.row.footer {
+    border-top-color: #635C56 !important;
+    border-bottom-color: #635C56 !important;
+}
+
+img.order-list__product-image {
+    border-color: #635C56 !important;
+}
+
+p {
+    color: #212121 !important;
+}
+
+table.row.section {
+    background-color: #F2F5F2;
+}
+
+@media (max-width: 500px) {
+    td.ec-footer-cell p br {
+        display: none;
+    }
+  }
+ 
+  </style>
+</head>
+
+  <body>
+    <table class="body">
+      <tr>
+        <td>
+        <table class="ec-header row" style="background-color: #033941; margin-top: 0 !important; margin-bottom: 30px !important;">
+    <tr>
+        <td class="header__cell" style="padding: 15px 0 !important;">
+            <center>
+                <table class="container">
+                    <tr>
+                        <td>
+                            <table class="row">
+                                <tr>
+                                    <td class="ec-header-cell">
+                                        <a href="https://dailygem.co">
+                                            <img src="https://cdn.shopify.com/s/files/1/0002/5673/7286/files/email-logo-light.png?v=1615580139" alt="{{ shop.name }}" width="90">
+                                        </a>
+                                    </td>
+                                    <td class="ec-header-cell" style="text-align: right;">
+                                        <a href="https://dailygem.co" style="color: #CDD8CF !important; display: inline-block;">
+                                            
+                                        </a>
+                                        <a href="https://dailygem.co/account/" style="color: #CDD8CF !important; display: inline-block; margin-left: 30px;">
+                                            My Account
+                                        </a>
+                                    </td>
+                                </tr>
+                            </table>
+                        </td>
+                    </tr>
+                </table>
+            </center>
+        </td>
+    </tr>
+</table>
+
+          <table class="row content">
+  <tr>
+    <td class="content__cell">
+      <center>
+        <table class="container">
+          <tr>
+            <td>
+              
+             <h2 style="margin-top: 20px; text-align: center;">{{ email_title }}</h2>
+<p style="text-align: center; margin-top: 10px; margin-bottom: 10px;font-size: 13px !important;"><u>Order</u> {{ order_name }}</p>
+
+           
+            {% if order_status_url %}
+              <table class="row actions">
+  <tr>
+    <td class="empty-line"> </td>
+  </tr>
+  <tr>
+    <td class="actions__cell">
+      <table class="button main-action-cell" style="float: none !important; margin-right: 0 !important; width: 100% !important;">
+
+        <tr>
+          <td class="button__cell"><a href="{{ order_status_url }}" class="button__text">View your order</a></td>
+        </tr>
+      </table>
+     
+
+    </td>
+  </tr>
+</table>
+
+            {% else %}
+              {% if shop.url %}
+    <table class="row actions">
+      <tr>
+        <td class="actions__cell">
+          <table class="button main-action-cell" style="float: none !important; margin-right: 0 !important; width: 100% !important;">
+
+            <tr>
+              <td class="button__cell"><a href="{{ shop.url }}" class="button__text">Visit our store</a></td>
+            </tr>
+          </table>
+        </td>
+      </tr>
+    </table>
+{% endif %}
+
+            {% endif %}
+            {% if fulfillment.tracking_numbers.size > 0 %}
+  <p class="disclaimer__subtext" style="text-align: center;">
+    <br/>
+    {% if fulfillment.tracking_numbers.size == 1 and fulfillment.tracking_company and fulfillment.tracking_url %}
+      {{ fulfillment.tracking_company }} tracking number: <a href="{{ fulfillment.tracking_url }}">{{ fulfillment.tracking_numbers.first }}</a>
+    {% elsif fulfillment.tracking_numbers.size == 1 %}
+      Tracking number: {{ fulfillment.tracking_numbers.first }}
+    {% else %}
+      Tracking numbers:<br />
+      {% for tracking_number in fulfillment.tracking_numbers %}
+        {{ tracking_number }}<br />
+      {% endfor %}
+    {% endif %}
+  </p>
+{% endif %}
+
+
+            </td>
+          </tr>
+        </table>
+      </center>
+    </td>
+  </tr>
+</table>
+
+          <table class="row section">
+  <tr>
+    <td class="section__cell">
+      <center>
+        <table class="container">
+          <tr>
+            <td>
+              <h3>Items in this shipment</h3>
+            </td>
+          </tr>
+        </table>
+        <table class="container">
+          <tr>
+            <td>
+              
+            
+<table class="row">
+  {% for line in fulfillment.fulfillment_line_items %}
+  <tr class="order-list__item">
+    <td class="order-list__item__cell">
+      <table>
+        <td>
+          {% if line.line_item.image %}
+            <img src="{{ line.line_item | img_url: 'compact_cropped' }}" align="left" width="60" height="60" class="order-list__product-image"/>
+          {% endif %}
+        </td>
+        <td class="order-list__product-description-cell">
+          {% if line.line_item.product.title %} 
+            {% assign line_title = line.line_item.product.title %}  
+          {% else %}  
+            {% assign line_title = line.line_item.title %}  
+          {% endif %}
+
+          {% if line.quantity < line.line_item.quantity %}
+            {% capture line_display %} {{ line.quantity }} of {{ line.line_item.quantity }} {% endcapture %}
+          {% else %}
+            {% assign line_display = line.line_item.quantity  %}
+          {% endif %}
+
+          <span class="order-list__item-title">{{ line_title }} × {{ line_display }}</span><br/>
+
+          {% if line.line_item.variant.title != 'Default Title' %}
+            <span class="order-list__item-variant">{{ line.line_item.variant.title }}</span><br/>
+          {% endif %}
+
+          {% if line.line_item.selling_plan_allocation %}
+            <span class="order-list__item-variant">{{ line.line_item.selling_plan_allocation.selling_plan.name }}</span><br/>
+          {% endif %}
+
+          {% if line.line_item.refunded_quantity > 0 %}
+            <span class="order-list__item-refunded">Refunded</span>
+          {% endif %}
+
+          {% if line.line_item.discount_allocations %}
+            {% for discount_allocation in line.line_item.discount_allocations %}
+              {% if discount_allocation.discount_application.target_selection != 'all' %}
+                <span class="order-list__item-discount-allocation">
+                  <img src="{{ 'notifications/discounttag.png' | shopify_asset_url }}" width="18" height="18" class="discount-tag-icon" />
+                  <span>
+                    {{ discount_allocation.discount_application.title | upcase }}
+                    (-{{ discount_allocation.amount | money }})
+                  </span>
+                </span>
+              {% endif %}
+            {% endfor %}
+          {% endif %}
+        </td>
+      </table>
+    </td>
+  </tr>{% endfor %}
+</table>
+
+
+            </td>
+          </tr>
+        </table>
+      </center>
+    </td>
+  </tr>
+</table>
+
+         
+<img src="{{ 'notifications/spacer.png' | shopify_asset_url }}" class="spacer" height="1" />
+
+
+<table class="ec-footer row" style="background-color: #033941; margin-top: 0 !important; margin-bottom: 0px !important;">
+    <tr>
+        <td class="footer__cell" style="padding: 15px 0 !important;">
+            <center>
+                <table class="container">
+                    <tr>
+                        <td>
+                            <table class="row">
+                                <tr>
+                                    <td class="ec-footer-cell" style="width: 33.333%;">
+                                        <p style="color: #CDD8CF !important; display: block; font-size: 12px !important; font-weight: 500 !important;">
+                                            Need to make changes to<br>
+                                            your self-health routine?
+                                        </p>
+                                        <a href="https://dailygem.co/account/" style="color: #FC8606 !important; display: block; font-size: 12px !important; text-decoration: underline; margin-top: 10px !important;">
+                                            Manage Account →
+                                        </a>
+                                    </td>
+                                    <td class="ec-footer-cell middle" style="width: 33.333%; text-align: center;">
+                                        <img style="width: 56px" src="https://cdn.shopify.com/s/files/1/0002/5673/7286/files/email-person.png?v=1615581070">
+                                    </td>
+                                    <td class="ec-footer-cell" style="text-align: right; width: 33.333%;">
+                                        <p style="color: #CDD8CF !important; display: block; font-size: 12px !important; font-weight: 500 !important;">
+                                            Want to Chat? We're here for<br>
+                                            you – call, text or email us.
+                                        </p>
+                                        <a href="https://help.dailygem.co/en-US/have-any-other-questions-21060" style="color: #FC8606 !important; display: block; font-size: 12px !important; margin-top: 10px !important; text-decoration: underline;">
+                                            Let's Go →
+                                        </a>
+                                    </td>
+                                </tr>
+                            </table>
+                        </td>
+                    </tr>
+                </table>
+            </center>
+        </td>
+    </tr>
+</table>
+        </td>
+      </tr>
+    </table>
+  </body>
+</html>

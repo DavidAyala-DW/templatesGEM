@@ -1,0 +1,734 @@
+{% capture email_title %}Get ready for your daily dose of healthy.{% endcapture %}
+{% capture email_body %}
+  {% if requires_shipping %}
+  {% case delivery_method %}
+      {% when 'pick-up' %}
+        You’ll receive an email when your order is ready for pickup.
+      {% when 'local' %}
+        Hi {{ customer.first_name }}, we're getting your order ready for delivery.
+      {% else %}
+        Hi {{ customer.first_name }}, we're getting your order ready to be shipped. We will notify you when it has been sent.
+    {% endcase %}
+      {% if delivery_instructions != blank  %}
+        <p><b>Delivery information:</b> {{ delivery_instructions }}</p>
+      {% endif %}
+  {% endif %}
+{% endcapture %}
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+  <title>{{ email_title }}</title>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+  <meta name="viewport" content="width=500px">
+  <link rel="stylesheet" type="text/css" href="/assets/notifications/styles.css">
+  <style>
+    .button__cell { background: {{ shop.email_accent_color }}; }
+    a, a:hover, a:active, a:visited { color: {{ shop.email_accent_color }}; }
+
+table.body {
+    background-color: #F2F5F2;
+}
+
+
+a {
+    color: #459b7e !important;
+}
+
+p a {
+  text-decoration: underline !important;
+}
+
+span.order-list__item-title {
+    color: #212121 !important;
+}
+
+span.order-list__item-variant {
+    color: #fc8606 !important;
+}
+
+p.order-list__item-price {
+    color: #459b7e !important;
+}
+
+del.order-list__item-original-price {
+    color: #459b7e !important;
+}
+
+td.subtotal-line__value, td.subtotal-line__value strong {
+    color: #459b7e !important;
+}
+
+td.subtotal-line__title * {
+    color: #212121 !important;
+}
+td.customer-info__item h4 {
+    color: #fc8606 !important;
+}
+
+td.customer-info__item p {
+    color: #212121 !important;
+}
+
+p.customer-info__item-content strong {
+    color: #459b7e !important;
+}
+
+td.button__cell, td.button__cell a {
+    background-color: #459b7e !important;
+    color: #fff !important;
+}
+
+
+tr.order-list__item, table.row.subtotal-lines, table.row.subtotal-table.subtotal-table--total, td.footer__cell, table.row.footer {
+    border-top-color: #635C56 !important;
+    border-bottom-color: #635C56 !important;
+}
+
+img.order-list__product-image {
+    border-color: #635C56 !important;
+}
+
+p {
+    color: #212121 !important;
+}
+
+table.row.section {
+    background-color: #F2F5F2;
+}
+ 
+ @media (max-width: 500px) {
+    td.ec-footer-cell p br {
+        display: none;
+    }
+  }
+
+  </style>
+</head>
+
+  <body>
+    <table class="body">
+      <tr>
+        <td>
+          
+<table class="ec-header row" style="background-color: #033941; margin-top: 0 !important; margin-bottom: 30px !important;">
+    <tr>
+        <td class="header__cell" style="padding: 15px 0 !important;">
+            <center>
+                <table class="container">
+                    <tr>
+                        <td>
+                            <table class="row">
+                                <tr>
+                                    <td class="ec-header-cell">
+                                        <a href="https://dailygem.co">
+                                            <img src="https://cdn.shopify.com/s/files/1/0002/5673/7286/files/email-logo-light.png?v=1615580139" alt="{{ shop.name }}" width="90">
+                                        </a>
+                                    </td>
+                                    <td class="ec-header-cell" style="text-align: right;">
+                                        <a href="https://dailygem.co" style="color: #CDD8CF !important; display: inline-block;">
+                                            
+                                        </a>
+                                        <a href="https://dailygem.co/account/" style="color: #CDD8CF !important; display: inline-block; margin-left: 30px;">
+                                            My Account
+                                        </a>
+                                    </td>
+                                </tr>
+                            </table>
+                        </td>
+                    </tr>
+                </table>
+            </center>
+        </td>
+    </tr>
+</table>
+
+
+          <table class="row content">
+  <tr>
+    <td class="content__cell">
+      <center>
+        <table class="container">
+          <tr>
+            <td>
+              
+            <h2 style="margin-top: 20px; text-align: center; margin-top: 30px;">{{ email_title }}</h2>
+            <p style="text-align: left;">We’re thrilled to have you in the GEM community!</p>
+            <p style="text-align: left; margin-top: 10px; font-size: 13px !important;"><u>Order</u> {{ order_name }}</p>
+
+{% assign sleepSample = false %}
+{% for line in subtotal_line_items %}
+  {% if line.product.title contains "Sleep Sample" %}
+    {% assign sleepSample = true %}
+   {% endif %}
+{% endfor %}
+{% assign immunitySample = false %}
+{% for line in subtotal_line_items %}
+  {% if line.product.title contains "Immunity Sample" %}
+    {% assign immunitySample = true %}
+   {% endif %}
+{% endfor %}
+{% assign samplerKit = false %}
+{% for line in subtotal_line_items %}
+  {% if line.product.title contains "Sampler" %}
+    {% assign samplerKit = true %}
+   {% endif %}
+{% endfor %}
+{% assign trialtrio = false %}
+{% for line in subtotal_line_items %}
+  {% if line.product.title contains "Trio" %}
+    {% assign trialtrio = true %}
+   {% endif %}
+{% endfor %}
+
+{% if trialtrio %}
+<p style="text-align: left; margin-top: 30px;">
+Once your Trial Trio arrives, you’ll have the opportunity to taste test our three different bites (that work great alone or even better together) and find the right bite for your daily health needs. 
+</p>
+<p style="text-align: left; margin-top: 30px;">
+We’ll send you a text about your first restock 22 days from now, where you can reply to swap to a different bite of your choice or cancel at anytime. The default bite is our most popular Starter Kit, Cacao Daily Essentials.
+</p>
+{% endif %}
+
+{% if samplerKit %}
+<p style="text-align: left; margin-top: 30px;">
+Once your Sampler Kit arrives, you’ll have the opportunity to taste test our three different bites (that work great alone or even better together) and find the right bite for your daily and nightly health. 
+</p>
+<p style="text-align: left; margin-top: 30px;">
+We’ll send you a text about your first restock 22 days from now, where you can reply to swap to a different bite of your choice or cancel at anytime. The default bite is our most popular Starter Kit, Daily Essentials with Immune Support (Citrus Ginger).
+</p>
+{% endif %}
+
+{% if sleepSample %}
+<p style="text-align: left; margin-top: 30px;">
+With your Sleep bites, enjoy 1 nightly at least 60 minutes before bedtime to support a holistic sleep foundation. Consistency is key and with nightly use you can expect to see full benefits in 2-3 weeks. Our Sleep bites can be taken in tandem with our Daily Essentials and Immunity Essentials bites.
+</p>
+{% endif %}
+
+{% if immunitySample %}
+<p style="text-align: left; margin-top: 30px;">
+With your Immunity bites, enjoy 1 daily at anytime for foundational support across immune health, inflammation, gut and skin. Consistency is key and with daily use you can expect to see full benefits in 2-3 weeks. Our Immunity bites can be taken in tandem with our Daily Essentials and Sleep Essentials bites.
+</p>
+{% endif %}
+
+             
+
+{% assign firstOrder = true %}
+{% for tag in tags %}
+  {% if tag contains "Subscription" }
+    {% assign isSubscription = true %}
+  {% endif %}
+{% endfor %}
+
+
+
+{% if isSubscription %}
+  {% for tag in tags %}
+  {% if tag contains "Subscription First Order" }
+    {% assign firstOrder = false %}
+  {% endif %}
+{% endfor %}
+{% endif %}
+
+{%  if firstOrder %}
+
+<p style="margin-top: 30px;">
+If you have any questions regarding this order, we're here to help. Please <a href="https://help.dailygem.co/en-US/have-any-other-questions-21060">contact us</a> and reference your order {{ order_name }}.
+         
+ 
+
+<br><br>
+        <span style="font-size: 14px !important; line-height: 1 !important;">Note: Due to slowdowns across carriers, transit time may fall between 7-10 business days after your order ships.</span></p>
+
+          {% else %}
+         
+          <p style="margin-top: 40px; text-align: center;">
+        <img style="max-width: 280px; height:  auto;" src="https://cdn.shopify.com/s/files/1/0002/5673/7286/files/gem_refill.png?v=1612982810"> 
+        </p>    
+        <p style="margin-top: 10px;"> 
+GEM is on its way to you now in our eco-friendly packaging. Note: your compostable refill pack will decompose in 3 months when composted.
+<br><br>
+        <span style="font-size: 14px !important; line-height: 1 !important;">
+
+</span>
+</p>
+
+{% endif %}
+            </td>
+          </tr>
+        </table>
+      </center>
+    </td>
+  </tr>
+</table>
+
+          {% assign gift_card_line_item = line_items | where: "gift_card" %}
+          {% if gift_card_line_item.first %}
+            <table class="row section">
+  <tr>
+    <td class="section__cell">
+      <center>
+        <table class="container">
+          <tr>
+            <td>
+              <h3>Gift card</h3>
+            </td>
+          </tr>
+        </table>
+        <table class="container">
+          <tr>
+            <td>
+              
+              <p> You’ll receive separate emails for any gift cards.</p>
+
+            </td>
+          </tr>
+        </table>
+      </center>
+    </td>
+  </tr>
+</table>
+          {% endif %}
+
+          <table class="row section">
+  <tr>
+    <td class="section__cell">
+      <center>
+        <table class="container">
+          <tr>
+            <td>
+              <h3>Order summary</h3>
+            </td>
+          </tr>
+        </table>
+        <table class="container">
+          <tr>
+            <td>
+              
+            
+<table class="row">
+  {% for line in subtotal_line_items %}
+  <tr class="order-list__item">
+    <td class="order-list__item__cell">
+      <table>
+        <td>
+          {% if line.image %}
+            <img src="{{ line | img_url: 'compact_cropped' }}" align="left" width="60" height="60" class="order-list__product-image"/>
+          {% endif %}
+        </td>
+        <td class="order-list__product-description-cell">
+          {% if line.product.title %}	
+            {% assign line_title = line.product.title %}	
+          {% else %}	
+            {% assign line_title = line.title %}	
+          {% endif %}
+
+          {% if line.quantity < line.quantity %}
+            {% capture line_display %} {{ line.quantity }} of {{ line.quantity }} {% endcapture %}
+          {% else %}
+            {% assign line_display = line.quantity  %}
+          {% endif %}
+
+          <span class="order-list__item-title">{{ line_title }} × {{ line_display }}</span><br/>
+
+          {% if line.variant.title != 'Default Title' %}
+            <span class="order-list__item-variant">{{ line.variant.title }}</span><br/>
+          {% endif %}
+
+         
+
+          {% if line.selling_plan_allocation %}
+            <span class="order-list__item-variant">{{ line.selling_plan_allocation.selling_plan.name }}</span><br/>
+          {% endif %}
+
+          {% if line.refunded_quantity > 0 %}
+            <span class="order-list__item-refunded">Refunded</span>
+          {% endif %}
+
+          {% if line.discount_allocations %}
+            {% for discount_allocation in line.discount_allocations %}
+              {% if discount_allocation.discount_application.target_selection != 'all' %}
+                <span class="order-list__item-discount-allocation">
+                  <img src="{{ 'notifications/discounttag.png' | shopify_asset_url }}" width="18" height="18" class="discount-tag-icon" />
+                  <span>
+                    {{ discount_allocation.discount_application.title | upcase }}
+                    (-{{ discount_allocation.amount | money }})
+                  </span>
+                </span>
+              {% endif %}
+            {% endfor %}
+          {% endif %}
+        </td>
+          <td class="order-list__price-cell">
+            {% if line.original_line_price != line.final_line_price %}
+              <del class="order-list__item-original-price">{{ line.original_line_price | money }}</del>
+            {% endif %}
+            <p class="order-list__item-price">
+              {% if line.final_line_price > 0 %}
+                {{ line.final_line_price | money }}
+              {% else %}
+                Free
+              {% endif %}
+            </p>
+          </td>
+      </table>
+    </td>
+  </tr>{% endfor %}
+
+{% for discount_application in discount_applications %}
+  {% if discount_application.target_selection == 'all' %}
+    {% capture discount_title %}
+      {% if discount_application.title %}
+        {{ discount_application.title | upcase }}
+      {% else %}
+        Discount
+      {% endif %}
+    {% endcapture %}
+ 
+  {% endif %}
+{% endfor %}
+</table>
+
+            <table class="row subtotal-lines">
+  <tr>
+    <td class="subtotal-spacer"></td>
+    <td>
+      <table class="row subtotal-table">
+        {% for discount_application in discount_applications %}
+          {% if discount_application.target_selection == 'all' %}
+            {% capture discount_title %}
+              {% if discount_application.title %}
+                {{ discount_application.title | upcase }}
+              {% else %}
+                Discount
+              {% endif %}
+            {% endcapture %}
+            
+<tr class="subtotal-line">
+  <td class="subtotal-line__title">
+    <p>
+      <span>Discount</span>
+        <span class="subtotal-line__discount">
+          <img src="{{ 'notifications/discounttag.png' | shopify_asset_url }}" width="18" height="18" class="discount-tag-icon" />
+          <span class="subtotal-line__discount-title">{{ discount_title }}</span>
+        </span>
+    </p>
+  </td>
+  <td class="subtotal-line__value">
+    <strong>-{{ discount_application.total_allocated_amount | money }}</strong>
+  </td>
+</tr>
+
+          {% endif %}
+        {% endfor %}
+
+        
+<tr class="subtotal-line">
+  <td class="subtotal-line__title">
+    <p>
+      <span>Subtotal</span>
+    </p>
+  </td>
+  <td class="subtotal-line__value">
+    <strong>{{ subtotal_price | money }}</strong>
+  </td>
+</tr>
+
+        {% if delivery_method == 'pick-up' %}
+          
+<tr class="subtotal-line">
+  <td class="subtotal-line__title">
+    <p>
+      <span>Pickup</span>
+    </p>
+  </td>
+  <td class="subtotal-line__value">
+    <strong>{{ shipping_price | money }}</strong>
+  </td>
+</tr>
+
+        {% else %}
+          
+<tr class="subtotal-line">
+  <td class="subtotal-line__title">
+    <p>
+      <span>Shipping</span>
+    </p>
+  </td>
+  <td class="subtotal-line__value">
+    <strong>{{ shipping_price | money }}</strong>
+  </td>
+</tr>
+
+        {% endif %}
+
+        {% if current_total_duties %}
+          
+<tr class="subtotal-line">
+  <td class="subtotal-line__title">
+    <p>
+      <span>Duties</span>
+    </p>
+  </td>
+  <td class="subtotal-line__value">
+    <strong>{{ current_total_duties | money }}</strong>
+  </td>
+</tr>
+
+        {% endif %}
+
+        
+<tr class="subtotal-line">
+  <td class="subtotal-line__title">
+    <p>
+      <span>Taxes</span>
+    </p>
+  </td>
+  <td class="subtotal-line__value">
+    <strong>{{ tax_price | money }}</strong>
+  </td>
+</tr>
+
+
+        {% if total_tip and total_tip > 0 %}
+          
+<tr class="subtotal-line">
+  <td class="subtotal-line__title">
+    <p>
+      <span>Tip</span>
+    </p>
+  </td>
+  <td class="subtotal-line__value">
+    <strong>{{ total_tip | money }}</strong>
+  </td>
+</tr>
+
+        {% endif %}
+      </table>
+      <table class="row subtotal-table subtotal-table--total">
+        
+<tr class="subtotal-line">
+  <td class="subtotal-line__title">
+    <p>
+      <span>Total</span>
+    </p>
+  </td>
+  <td class="subtotal-line__value">
+    <strong>{{ total_price | money_with_currency }}</strong>
+  </td>
+</tr>
+
+      </table>
+
+      {% if total_discounts > 0 %}
+        <p class="total-discount">
+          You saved <span class="total-discount--amount">{{ total_discounts | money }}</span>
+        </p>
+      {% endif %}
+
+      {% assign transaction_size = 0 %}
+      {% assign transaction_amount = 0 %}
+      {% for transaction in transactions %}
+        {% if transaction.status == "success" %}
+        {% unless transaction.kind == "authorization" or transaction.kind == "void" %}
+          {% assign transaction_size = transaction_size | plus: 1 %}
+          {% assign transaction_amount = transaction_amount | plus: transaction.amount %}
+        {% endunless %}
+        {% endif %}
+      {% endfor %}
+
+      {% if transaction_size > 1 or transaction_amount < total_price %}
+        <table class="row subtotal-table">
+          <tr><td colspan="2" class="subtotal-table__line"></td></tr>
+          <tr><td colspan="2" class="subtotal-table__small-space"></td></tr>
+
+          {% for transaction in transactions %}
+            {% if transaction.status == "success" and transaction.kind == "capture" or transaction.kind == "sale" %}
+              {% if transaction.payment_details.credit_card_company %}
+                {% capture transaction_name %}{{ transaction.payment_details.credit_card_company }} (ending in {{ transaction.payment_details.credit_card_last_four_digits }}){% endcapture %}
+              {% else %}
+                {% capture transaction_name %}{{ transaction.gateway_display_name }}{% endcapture %}
+              {% endif %}
+
+              
+<tr class="subtotal-line">
+  <td class="subtotal-line__title">
+    <p>
+      <span>{{transaction_name}}</span>
+    </p>
+  </td>
+  <td class="subtotal-line__value">
+    <strong>{{ transaction.amount | money }}</strong>
+  </td>
+</tr>
+
+            {% endif %}
+            {% if transaction.kind == 'refund' %}
+              {% if transaction.payment_details.credit_card_company %}
+                {% assign refund_method_title = transaction.payment_details.credit_card_company %}
+              {% else %}
+                {% assign refund_method_title = transaction.gateway %}
+              {% endif %}
+
+              
+<tr class="subtotal-line">
+  <td class="subtotal-line__title">
+    <p>
+      <span>Refund</span>
+        <br>
+        <small>{{ refund_method_title | capitalize }}</small>
+    </p>
+  </td>
+  <td class="subtotal-line__value">
+    <strong>- {{ transaction.amount | money }}</strong>
+  </td>
+</tr>
+
+            {% endif %}
+          {% endfor %}
+        </table>
+      {% endif %}
+    </td>
+  </tr>
+</table>
+
+
+            </td>
+          </tr>
+        </table>
+      </center>
+    </td>
+  </tr>
+</table>
+
+          <table class="row section">
+  <tr>
+    <td class="section__cell">
+      <center>
+        <table class="container">
+          <tr>
+            <td>
+              <h3>Customer information</h3>
+            </td>
+          </tr>
+        </table>
+        <table class="container">
+          <tr>
+            <td>
+<p style="text-align: left">
+Please double check your shipping address and reach out to our team immediately if it needs to be changed. Once you receive a shipping notification we are unable to update addresses or intercept packages in any way. If your address is missing information or needs verification, our team will attempt to reach you via email once. If we are unable to reach you, your order will be canceled and refunded. 
+</p>
+           &nbsp;
+              
+            <table class="row">
+              <tr>
+                {% if requires_shipping and shipping_address %}
+                <td class="customer-info__item">
+                  <h4>Shipping address</h4>
+                  {{ shipping_address | format_address }}
+                </td>
+                {% endif %}
+                {% if billing_address %}
+                <td class="customer-info__item">
+                  <h4>Billing address</h4>
+                  {{ billing_address | format_address }}
+                </td>
+                {% endif %}
+              </tr>
+            </table>
+            <table class="row">
+              <tr>
+                {% if requires_shipping and shipping_address %}
+                <td class="customer-info__item">
+                  <h4>Shipping method</h4>
+                  <p>{{ shipping_method.title }}</p>
+                </td>
+                {% endif %}
+                {% assign transaction_count = transactions | size %}
+                {% if transaction_size > 0 %}
+                <td class="customer-info__item">
+                  <h4>Payment method</h4>
+                  {% for transaction in transactions %}
+                    {% if transaction.status == "success" or transaction.status == "pending" %}
+                      {% if transaction.kind == "capture" or transaction.kind == "sale" %}
+                        {% if transaction.payment_details.credit_card_company %}
+                            <p class="customer-info__item-content">
+                              <img src="{{ transaction.payment_details.credit_card_company | downcase | replace: ' ', '-'  | payment_type_img_url }}" class="customer-info__item-credit" height="24">
+                              <span>ending with {{ transaction.payment_details.credit_card_last_four_digits }} </span>
+                            </p>
+                          {% elsif transaction.gateway_display_name == "Gift card" %}
+                          <p class="customer-info__item-content">
+                            <img src="{{ transaction.gateway_display_name | downcase | replace: ' ', '-'  | payment_type_img_url }}" class="customer-info__item-credit" height="24">
+                          ending with {{ transaction.payment_details.gift_card.last_four_characters | upcase }} — <strong>{{ transaction.amount | money }}</strong> <br />
+                                Gift card balance: {{ transaction.payment_details.gift_card.balance |  money }}
+                          </p>
+                          {% else %}
+                              <p class="customer-info__item-content">
+                              {{ transaction.gateway_display_name }} </p>
+                          {% endif %}
+                  {% endif %}
+                    {% endif %}
+                  {% endfor %}
+                </td>
+                {% endif %}
+              </tr>
+            </table>
+
+            </td>
+          </tr>
+        </table>
+      </center>
+    </td>
+  </tr>
+</table>
+
+         
+
+<img src="{{ 'notifications/spacer.png' | shopify_asset_url }}" class="spacer" height="1" />
+
+
+<table class="ec-footer row" style="background-color: #033941; margin-top: 0 !important; margin-bottom: 0px !important;">
+    <tr>
+        <td class="footer__cell" style="padding: 15px 0 !important;">
+            <center>
+                <table class="container">
+                    <tr>
+                        <td>
+                            <table class="row">
+                                <tr>
+                                    <td class="ec-footer-cell" style="width: 33.333%;">
+                                        <p style="color: #CDD8CF !important; display: block; font-size: 12px !important; font-weight: 500 !important;">
+                                            Need to make changes to<br>
+                                            your self-health routine?
+                                        </p>
+                                        <a href="https://dailygem.co/account/" style="color: #FC8606 !important; display: block; font-size: 12px !important; text-decoration: underline; margin-top: 10px !important;">
+                                            Manage Account →
+                                        </a>
+                                    </td>
+                                    <td class="ec-footer-cell middle" style="width: 33.333%; text-align: center;">
+                                        <img style="width: 56px" src="https://cdn.shopify.com/s/files/1/0002/5673/7286/files/email-person.png?v=1615581070">
+                                    </td>
+                                    <td class="ec-footer-cell" style="text-align: right; width: 33.333%;">
+                                        <p style="color: #CDD8CF !important; display: block; font-size: 12px !important; font-weight: 500 !important;">
+                                            Want to Chat? We're here for<br>
+                                            you – call, text or email us.
+                                        </p>
+                                        <a href="https://dailygem.helpdocs.io/article/5qutspy5n6-have-any-other-questions" style="color: #FC8606 !important; display: block; font-size: 12px !important; margin-top: 10px !important; text-decoration: underline;">
+                                            Let's Go →
+                                        </a>
+                                    </td>
+                                </tr>
+                            </table>
+                        </td>
+                    </tr>
+                </table>
+            </center>
+        </td>
+    </tr>
+</table>
+        </td>
+      </tr>
+    </table>
+  </body>
+</html>
+
